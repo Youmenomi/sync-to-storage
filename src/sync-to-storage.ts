@@ -74,7 +74,8 @@ export function SyncToAws(options: Option): Promise<Result> {
     deleteRemoved: true,
     s3Params: {
       Bucket: options.bucket,
-      Prefix: options.remotePath
+      Prefix: options.remotePath,
+      ACL: 'public-read'
     }
   };
   const uploader = client.uploadDir(params);
