@@ -57,6 +57,8 @@ const build = (input, output, withMin = false) => {
 
 export default [].concat(
   build('./src/index.ts', {
+    banner: `#!/usr/bin/env node
+    `,
     file: bin['sync-to-storage'],
     format: 'cjs'
   }),
