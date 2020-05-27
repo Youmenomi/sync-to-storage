@@ -10,7 +10,10 @@ module.exports = {
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   globals: {
     'ts-jest': {
-      babelConfig: true
+      babelConfig: true,
+      diagnostics: {
+        warnOnly: true
+      }
     }
   }
 }

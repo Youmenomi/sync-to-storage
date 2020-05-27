@@ -13,6 +13,6 @@
     "declaration": true,
     "types": ["@types/jest", "@types/node"]
   },
-  "include": ["src", "types", "test"],
-  "exclude": ["src/index.ts"]
+  "include": ["src", "types", "__test__"],
+  "exclude": ["node_modules", "src/index.ts"]
 }
