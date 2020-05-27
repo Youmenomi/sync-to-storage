@@ -1,0 +1,74 @@
+{
+  "name": "sync-to-storage",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "sync",
+    "aws",
+    "ali"
+  ],
+  "author": "Dean Yao <youmenomi@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Youmenomi/sync-to-storage"
+  },
+  "bin": {
+    "sync-to-storage": "./dist/cli.js"
+  },
+  "main": "dist/sync-to-storage.js",
+  "module": "dist/esm/sync-to-storage.esm.js",
+  "types": "dist/types/sync-to-storage.d.ts",
+  "files": [
+    "dist/**/*",
+    "LICENSE"
+  ],
+  "scripts": {
+    "cli": "node dist/cli.js",
+    "build:js": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly",
+    "dev:fast": "npm run build:js && node bin/cli.js",
+    "dev:cli": "node bin/cli.js",
+    "build": "tsc --noEmit && eslint --ext .ts,.js ./src && npm run build:js && npm run build:types",
+    "test": "jest",
+    "link": "npm link && npm link sync-to-storage",
+    "unlink": "npm unlink sync-to-storage && npm unlink",
+    "debug": "node --nolazy --inspect-brk=9229 bin/cli.js",
+    "np": "np"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.6.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@nuxtjs/eslint-config-typescript": "^0.1.2",
+    "@types/jest": "^24.0.18",
+    "@types/prompts": "^2.0.3",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^24.1.0",
+    "np": "^6.2.3",
+    "prettier": "^1.16.4",
+    "rollup": "^1.23.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-filesize": "^6.2.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "@auth0/s3": "^1.0.0",
+    "@types/async": "^3.2.3",
+    "ali-oss-extra": "^0.1.1",
+    "async": "^3.2.0",
+    "chalk": "^3.0.0",
+    "cosmiconfig": "^6.0.0",
+    "ora": "^4.0.4"
+  }
+}
