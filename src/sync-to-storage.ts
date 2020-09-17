@@ -100,6 +100,7 @@ export async function SyncToAli(options: Option): Promise<Result> {
     bucket: options.bucket,
   });
   try {
+    DEBUG(await client.deleteDir(options.remotePath));
     DEBUG(await client.syncDir(options.localPath, options.remotePath));
     return [null, options];
   } catch (error) {
