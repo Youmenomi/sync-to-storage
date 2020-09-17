@@ -4,72 +4,84 @@
   "description": "",
   "keywords": [
     "sync",
+    "upload",
     "aws",
     "ali"
   ],
-  "author": "Dean Yao <youmenomi@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Youmenomi/sync-to-storage"
-  },
-  "bin": {
-    "sync-to-storage": "./dist/cli.js"
-  },
+  "bin": "./dist/cli.js",
   "main": "dist/sync-to-storage.js",
   "module": "dist/esm/sync-to-storage.esm.js",
   "types": "dist/types/sync-to-storage.d.ts",
   "files": [
-    "dist/**/*",
-    "LICENSE"
+    "dist"
   ],
   "scripts": {
+    "test": "jest --passWithNoTests",
     "cli": "node dist/cli.js",
+    "debug": "node --nolazy --inspect-brk=9229 bin/cli.js",
+    "ts:check": "tsc --noEmit -p tsconfig.build.json",
     "build:js": "rollup -c",
-    "build:types": "tsc --emitDeclarationOnly",
     "dev:fast": "npm run build:js && node bin/cli.js",
     "dev:cli": "node bin/cli.js",
-    "build": "tsc --noEmit && eslint --ext .ts,.js ./src && npm run build:js && npm run build:types",
-    "test": "jest",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "npm run ts:check && eslint --ext .ts,.js ./src && npm run build:js && npm run build:types",
     "link": "npm link && npm link sync-to-storage",
     "unlink": "npm unlink sync-to-storage && npm unlink",
-    "debug": "node --nolazy --inspect-brk=9229 bin/cli.js",
-    "np": "np"
+    "release": "np",
+    "version": "npm run build"
   },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "prettier --write",
+      "eslint --fix",
+      "jest --bail --findRelatedTests"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Youmenomi/sync-to-storage"
+  },
+  "author": "Dean Yao <youmenomi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Youmenomi/sync-to-storage/issues"
+  },
+  "homepage": "https://github.com/Youmenomi/sync-to-storage#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-decorators": "^7.6.0",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-typescript": "^7.6.0",
-    "@nuxtjs/eslint-config-typescript": "^0.1.2",
-    "@types/jest": "^24.0.18",
-    "@types/prompts": "^2.0.3",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.1.0",
-    "eslint": "^6.1.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "jest": "^24.1.0",
-    "np": "^6.2.3",
-    "prettier": "^1.16.4",
-    "rollup": "^1.23.1",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-filesize": "^6.2.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.6.4"
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "jest": "^26.4.2",
+    "lint-staged": "^10.4.0",
+    "np": "^6.5.0",
+    "prettier": "^2.1.2",
+    "rollup": "^2.27.1",
+    "rollup-simple-configer": "^0.0.2",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
   },
   "dependencies": {
     "@auth0/s3": "^1.0.0",
-    "@endemolshinegroup/cosmiconfig-typescript-loader": "^1.0.1",
-    "@types/async": "^3.2.3",
+    "@endemolshinegroup/cosmiconfig-typescript-loader": "^3.0.2",
     "ali-oss-extra": "^0.1.1",
-    "async": "^3.2.0",
-    "chalk": "^3.0.0",
-    "cosmiconfig": "^6.0.0",
-    "ora": "^4.0.4"
+    "chalk": "^4.1.0",
+    "cosmiconfig": "^7.0.0",
+    "ora": "^5.1.0",
+    "p-each-series": "^2.1.0"
   }
 }

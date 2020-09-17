@@ -2,11 +2,11 @@ import ora from 'ora';
 import chalk from 'chalk';
 import s3 from '@auth0/s3';
 import OSS from 'ali-oss-extra';
-import { eachSeries } from 'async';
+import eachSeries from 'p-each-series';
 
 export enum PublishTo {
   AWS = 'AWS',
-  ALI = 'ALI'
+  ALI = 'ALI',
 }
 
 export type Option = {
@@ -24,7 +24,7 @@ type Result = [any, Option | null];
 export async function publishTo(options: Option[]) {
   log(`🚀 Start publishing...
     `);
-  await eachSeries(options, async (option, cb) => {
+  await eachSeries(options, async (option) => {
     const spinner = ora(
       `sync [${option.localPath}] to [${option.publishTo}][${option.bucket}${
         option.region ? `/${option.region}` : ''
@@ -46,7 +46,6 @@ export async function publishTo(options: Option[]) {
     } else {
       spinner.succeed();
     }
-    if (cb) cb();
   });
   log(``);
   log(`🦄 DONE!
@@ -57,8 +56,9 @@ function log(...value: any[]) {
   // eslint-disable-next-line no-console
   console.log(...value);
 }
-function DEBUG(..._value: any[]) {
+function DEBUG(...value: any[]) {
   //
+  value;
 }
 
 export function SyncToAws(options: Option): Promise<Result> {
@@ -66,8 +66,8 @@ export function SyncToAws(options: Option): Promise<Result> {
     s3Options: {
       accessKeyId: options.accessKeyId,
       secretAccessKey: options.accessKeySecret,
-      region: options.region
-    }
+      region: options.region,
+    },
   });
   const params = {
     localDir: options.localPath,
@@ -75,18 +75,18 @@ export function SyncToAws(options: Option): Promise<Result> {
     s3Params: {
       Bucket: options.bucket,
       Prefix: options.remotePath,
-      ACL: 'public-read'
-    }
+      ACL: 'public-read',
+    },
   };
   const uploader = client.uploadDir(params);
   return new Promise((resolve) => {
-    uploader.on('error', function(err: any) {
+    uploader.on('error', function (err: any) {
       resolve([err, null]);
     });
-    uploader.on('progress', function() {
+    uploader.on('progress', function () {
       DEBUG(uploader.progressAmount, uploader.progressTotal);
     });
-    uploader.on('end', function() {
+    uploader.on('end', function () {
       resolve([null, options]);
     });
   });
@@ -97,7 +97,7 @@ export async function SyncToAli(options: Option): Promise<Result> {
     accessKeyId: options.accessKeyId,
     accessKeySecret: options.accessKeySecret,
     region: options.region,
-    bucket: options.bucket
+    bucket: options.bucket,
   });
   try {
     DEBUG(await client.syncDir(options.localPath, options.remotePath));

@@ -1,18 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "lib": ["esnext", "esnext.asynciterable", "dom"],
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "declarationDir": "dist/types",
-    "declaration": true,
     "types": ["@types/jest", "@types/node"]
   },
-  "include": ["src", "types"],
-  "exclude": ["node_modules", "src/index.ts"]
+  "include": ["src", "types", "__test__"]
 }

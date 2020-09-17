@@ -4,13 +4,8 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
-    '^.+\\.jsx?$': 'babel-jest'
+    '^.+\\.jsx?$': 'babel-jest',
   },
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
-  globals: {
-    'ts-jest': {
-      babelConfig: true
-    }
-  }
 }

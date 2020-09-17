@@ -14,13 +14,13 @@ const moduleName = 'sync-to-storage';
     `.${moduleName}rc.yml`,
     `.${moduleName}rc.js`,
     `.${moduleName}.config.js`,
-    `.${moduleName}.config.ts`
+    `.${moduleName}.config.ts`,
   ];
   const explorer = cosmiconfig(moduleName, {
     searchPlaces,
     loaders: {
-      '.ts': TypeScriptLoader
-    }
+      '.ts': TypeScriptLoader,
+    },
   });
   const result = await explorer.search();
   if (result && !result.isEmpty) {
