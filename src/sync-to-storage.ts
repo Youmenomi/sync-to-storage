@@ -10,6 +10,7 @@ export enum PublishTo {
 }
 
 export type Option = {
+  name?: string;
   publishTo: PublishTo;
   accessKeyId: string;
   accessKeySecret: string;
@@ -25,13 +26,14 @@ export async function publishTo(options: Option[]) {
   log(`🚀 Start publishing...
     `);
   await eachSeries(options, async (option) => {
-    const spinner = ora(
-      `sync [${option.localPath}] to [${option.publishTo}][${option.bucket}${
-        option.region ? `/${option.region}` : ''
-      }]${option.remotePath ? `[${option.remotePath}]` : ''}`
-    ).start();
+    const name = option.name === undefined ? '' : option.name;
+    const { localPath, publishTo, bucket, region, remotePath } = option;
+    const text = `sync [${localPath}] to [${publishTo}][${bucket}${
+      region ? `/${region}` : ''
+    }]${remotePath ? `[${remotePath}]` : ''}`;
+    const spinner = ora(chalk.gray(name) + text).start();
     let syncFun: typeof SyncToAws | typeof SyncToAli;
-    switch (option.publishTo) {
+    switch (publishTo) {
       case PublishTo.AWS:
         syncFun = SyncToAws;
         break;
@@ -41,10 +43,10 @@ export async function publishTo(options: Option[]) {
     }
     const result = await syncFun(option);
     if (result[0]) {
-      spinner.fail();
+      spinner.fail(chalk.red(name) + text);
       log(` ${chalk.red(result[0])}`);
     } else {
-      spinner.succeed();
+      spinner.succeed(chalk.green(name) + text);
     }
   });
   log(``);
