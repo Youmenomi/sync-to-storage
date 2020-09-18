@@ -31,7 +31,7 @@ export async function publishTo(options: Option[]) {
     const text = `sync [${localPath}] to [${publishTo}][${bucket}${
       region ? `/${region}` : ''
     }]${remotePath ? `[${remotePath}]` : ''}`;
-    const spinner = ora(chalk.gray(name) + text).start();
+    const spinner = ora(`${chalk.gray(name)} ${text}`).start();
     let syncFun: typeof SyncToAws | typeof SyncToAli;
     switch (publishTo) {
       case PublishTo.AWS:
@@ -43,10 +43,10 @@ export async function publishTo(options: Option[]) {
     }
     const result = await syncFun(option);
     if (result[0]) {
-      spinner.fail(chalk.red(name) + text);
+      spinner.fail(`${chalk.red(name)} ${text}`);
       log(` ${chalk.red(result[0])}`);
     } else {
-      spinner.succeed(chalk.green(name) + text);
+      spinner.succeed(`${chalk.green(name)} ${text}`);
     }
   });
   log(``);
